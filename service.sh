@@ -27,18 +27,15 @@ output=$(sendNtfyNotificationWithCurl "$message" "$custom_ntfy_server" "$ntfy_to
 
 result=$?
 
+cp $MODDIR/module.prop.origin $MODDIR/module.prop
+
 sed -i '/description/d' $MODDIR/module.prop
 
 # Check the command's return value
 if [ $result -eq 0 ]; then
     echo "ntfy_at_boot: customize.sh - success ✅" >> /dev/kmsg
-    echo "
-description=status: success ✅
-" >> "$MODDIR/module.prop"
+    echo "description=status: success ✅" >> "$MODDIR/module.prop"
 else
-    echo "
-description=status: failed 😭
-(output: $output)
-" >> "$MODDIR/module.prop"
+    echo "description=status: failed 😭(output: $output)" >> "$MODDIR/module.prop"
 fi
  
