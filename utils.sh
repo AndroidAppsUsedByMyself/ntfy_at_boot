@@ -30,14 +30,14 @@ genDeviceEventMessageForAndroid() {
 
 sendNtfyNotificationWithCurl() {
 	local message="$1"
-	local custom_ntfy_server="$2"
+	local custom_ntfy_server="${2:-https://ntfy.sh}"
 	local ntfy_topic="$3"
 	local output
 
 	output=$(curl \
 		-X POST \
 		-d "$message" \
-		"$custom_ntfy_server/$ntfy_topic" 2>&1)
+		"${custom_ntfy_server}/${ntfy_topic}" 2>&1)
 	result=$?
 	echo "$output"
 	return $result
@@ -46,7 +46,7 @@ sendNtfyNotificationWithCurl() {
 sendNtfyNotificationWithNtfyCli() {
 	local message="$1"
 	local ntfy_topic="$2"
-	local custom_ntfy_server="$3"
+	local custom_ntfy_server="${3:-https://ntfy.sh}"
 	local binary="$4"
 	local output
 	output=$($binary publish $ntfy_topic $message)
