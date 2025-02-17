@@ -17,25 +17,15 @@ Ntfy at Boot 是一个 Magisk 模块，用于在设备启动时发送通知。�
 
 ## 配置
 
-安装模块后，您需要配置 `conf.sh` 文件来设置 `ntfy_topic`。`custom_ntfy_server` 是一个可选修改项。
+安装模块后，您需要配置 `conf.sh` 文件来设置 `NTFY_SUBSCRIPTIONS`
 
 1. 打开文件管理器并导航到 `/data/adb/ntfy`。
-2. 编辑 `conf.sh` 文件，将 `<ntfy_topic>` 替换为您自己的 `ntfy_topic`。
-
-### 自定义 `ntfy.sh` 服务器（可选）
-
-如果您想使用自定义的 `ntfy.sh` 服务器，可以按照以下步骤进行配置：
-
-1. 打开文件管理器并导航到 `/data/adb/ntfy`。
-2. 编辑 `conf.sh` 文件，找到 `custom_ntfy_server` 变量。
-3. 将 `custom_ntfy_server` 的值修改为您自己的 `ntfy.sh` 服务器地址。
-
-4. 保存文件并重启设备。
+2. 编辑 `conf.sh` 文件，将 `https://ntfy.sh/test https://ntfy.sh/test2` 替换为您自己的 `NTFY_SUBSCRIPTIONS`。
 
 ## 文件结构
 
 - `action.sh`：在设备启动时执行的脚本。
-- `conf.sh`：包含 `ntfy_topic` 和 `custom_ntfy_server`（可选）的配置文件。
+- `conf.sh`：包含 `NTFY_SUBSCRIPTIONS`的配置文件。
 - `customize.sh`：安装脚本。
 - `module.prop`：模块属性文件。
 - `post-fs-data.sh`：在文件系统挂载后执行的脚本。

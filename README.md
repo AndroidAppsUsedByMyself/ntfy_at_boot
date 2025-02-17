@@ -17,25 +17,15 @@ Ntfy at Boot is a Magisk module used to send notifications upon device boot. Thi
 
 ## Configuration
 
-After installing the module, you need to configure the `conf.sh` file to set the `ntfy_topic`. The `custom_ntfy_server` is an optional modification.
+After installing the module, you need to configure the `conf.sh` file to set the `NTFY_SUBSCRIPTIONS`.
 
 1. Open the file manager and navigate to `/data/adb/ntfy`.
-2. Edit the `conf.sh` file, replace `<ntfy_topic>` with your own `ntfy_topic`.
-
-### Custom `ntfy.sh` Server (Optional)
-
-If you want to use a custom `ntfy.sh` server, you can configure it as follows:
-
-1. Open the file manager and navigate to `/data/adb/ntfy`.
-2. Edit the `conf.sh` file and find the `custom_ntfy_server` variable.
-3. Modify the value of `custom_ntfy_server` to your own `ntfy.sh` server address.
-
-4. Save the file and reboot the device.
+2. Edit the `conf.sh` file, replace `https://ntfy.sh/test https://ntfy.sh/test2` with your own `NTFY_SUBSCRIPTIONS`.
 
 ## File Structure
 
 - `action.sh`: Script executed upon device boot.
-- `conf.sh`: Configuration file containing `ntfy_topic` and `custom_ntfy_server` (optional).
+- `conf.sh`: Configuration file containing `NTFY_SUBSCRIPTIONS`.
 - `customize.sh`: Installation script.
 - `module.prop`: Module property file.
 - `post-fs-data.sh`: Script executed after the file system is mounted.

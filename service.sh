@@ -1,16 +1,20 @@
-#!/bin/bash
 MODDIR=${0%/*}
 CONFIG_DIR="/data/adb/ntfy"
 CONFIG_FILE="conf.sh"
 
-source $CONFIG_DIR/$CONFIG_FILE
-source $MODDIR/utils.sh
+source "$CONFIG_DIR/$CONFIG_FILE"
+source "$MODDIR/utils.sh"
 
 message=$(genDeviceEventMessageForAndroid "boot")
 
-output=$(sendNtfyNotificationWithCurl "$message" "$custom_ntfy_server" "$ntfy_topic")
+for NTFY_SUBSCRIPTION in $NTFY_SUBSCRIPTIONS; do
+    output=$(sendNtfyNotificationWithCurlWithAllArgsV1 "Android" "default" "none" "$message" "none" "none" "$NTFY_SUBSCRIPTION")
+    result=$?
 
-result=$?
+    echo "Subscription: $NTFY_SUBSCRIPTION - Result:$result - Output: $output"
+    ui_print "Subscription: $NTFY_SUBSCRIPTION - Result:$result - Output: $output"
+    echo "Subscription: $NTFY_SUBSCRIPTION - Result:$result - Output: $output" >> /dev/kmsg
+done
 
 while [ "$(getprop sys.boot_completed)" != "1" ]; do
     sleep 1
@@ -23,19 +27,16 @@ sleep 20
 
 message=$(genDeviceEventMessageForAndroid "decrypted")
 
-output=$(sendNtfyNotificationWithCurl "$message" "$custom_ntfy_server" "$ntfy_topic")
+for NTFY_SUBSCRIPTION in $NTFY_SUBSCRIPTIONS; do
+    output=$(sendNtfyNotificationWithCurlWithAllArgsV1 "Android" "default" "none" "$message" "none" "none" "$NTFY_SUBSCRIPTION")
+    result=$?
 
-result=$?
+    ui_print "Subscription: $NTFY_SUBSCRIPTION - Result:$result - Output: $output"
+    echo "Subscription: $NTFY_SUBSCRIPTION - Result:$result - Output: $output" >> /dev/kmsg
+done
 
-cp $MODDIR/module.prop.origin $MODDIR/module.prop
+cp "$MODDIR/module.prop.origin" "$MODDIR/module.prop"
 
-sed -i '/description/d' $MODDIR/module.prop
+sed -i '/description/d' "$MODDIR/module.prop"
 
-# Check the command's return value
-if [ $result -eq 0 ]; then
-    echo "ntfy_at_boot: customize.sh - success ✅" >> /dev/kmsg
-    echo "description=status: success ✅" >> "$MODDIR/module.prop"
-else
-    echo "description=status: failed 😭(output: $output)" >> "$MODDIR/module.prop"
-fi
- 
+echo "description=status: success ✅" >> "$MODDIR/module.prop"

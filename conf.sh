@@ -1,2 +1,1 @@
-ntfy_topic="<ntfy_topic>"
-custom_ntfy_server="https://ntfy.sh"
+NTFY_SUBSCRIPTIONS="https://ntfy.sh/test https://ntfy.sh/test2"

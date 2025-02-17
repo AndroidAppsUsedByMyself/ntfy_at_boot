@@ -1,4 +1,3 @@
-#!/bin/bash
 MODDIR=${0%/*}
 #MODDIR="/data/adb/modules/ntfy_at_boot"
 CONFIG_DIR="/data/adb/ntfy"
@@ -9,20 +8,24 @@ source $MODDIR/utils.sh
 
 message=$(genDeviceEventMessageForAndroid "action")
 
-output=$(sendNtfyNotificationWithCurl "$message" "$custom_ntfy_server" "$ntfy_topic")
+outputs=""
 
-result=$?
+for NTFY_SUBSCRIPTION in $NTFY_SUBSCRIPTIONS; do
+    output=$(sendNtfyNotificationWithCurlWithAllArgsV1 "Android" "default" "none" "$message" "none" "none" "$NTFY_SUBSCRIPTION")
+    result=$?
 
-ui_print "- raw output: $output"
+    outputs="${outputs}Subscription:$NTFY_SUBSCRIPTION - Result:$result - Output:$output
+"
+done
+
+while IFS= read -r output; do
+    ui_print "$output"
+    echo "$output" >> /dev/kmsg
+done <<< "$outputs"
 
 cp $MODDIR/module.prop.origin $MODDIR/module.prop
 
-sed -i '/description/d' $MODDIR/module.prop
+sed -i '/description=/d' $MODDIR/module.prop
 
-# Check the command's return value
-if [ $result -eq 0 ]; then
-    echo "ntfy_at_boot: customize.sh - success ✅" >> /dev/kmsg
-    echo "description=status: success ✅" >> "$MODDIR/module.prop"
-else
-    echo "description=status: failed 😭(output: $output)" >> "$MODDIR/module.prop"
-fi
+echo "$outputs" >> /dev/kmsg
+echo "description=status: success ✅" >> "$MODDIR/module.prop"
