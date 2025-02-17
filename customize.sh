@@ -10,6 +10,8 @@ if [ ! -f $CONFIG_DIR/$CONFIG_FILE ]; then
   cp -f $MODPATH/conf.sh $CONFIG_DIR/$CONFIG_FILE
 fi
 
+cp -f $MODPATH/module.prop $MODPATH/module.prop.origin
+
 source $CONFIG_DIR/$CONFIG_FILE
 source $MODPATH/utils.sh
 ui_print "- installing ntfy_at_boot"
