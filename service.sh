@@ -11,8 +11,6 @@ for NTFY_SUBSCRIPTION in $NTFY_SUBSCRIPTIONS; do
     output=$(sendNtfyNotificationWithCurlWithAllArgsV1 "Android" "default" "none" "$message" "none" "none" "$NTFY_SUBSCRIPTION")
     result=$?
 
-    echo "Subscription: $NTFY_SUBSCRIPTION - Result:$result - Output: $output"
-    ui_print "Subscription: $NTFY_SUBSCRIPTION - Result:$result - Output: $output"
     echo "Subscription: $NTFY_SUBSCRIPTION - Result:$result - Output: $output" >> /dev/kmsg
 done
 
@@ -31,7 +29,6 @@ for NTFY_SUBSCRIPTION in $NTFY_SUBSCRIPTIONS; do
     output=$(sendNtfyNotificationWithCurlWithAllArgsV1 "Android" "default" "none" "$message" "none" "none" "$NTFY_SUBSCRIPTION")
     result=$?
 
-    ui_print "Subscription: $NTFY_SUBSCRIPTION - Result:$result - Output: $output"
     echo "Subscription: $NTFY_SUBSCRIPTION - Result:$result - Output: $output" >> /dev/kmsg
 done
 
